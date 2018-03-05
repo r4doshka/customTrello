@@ -25,7 +25,7 @@ class CardListItem extends Component {
   modalHideHandle = () => {
     this.setState({ modal: false });
   };
-  
+
 
   render() {
     const remark = 'vvedite nazvanie karto4ki';

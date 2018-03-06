@@ -23,53 +23,17 @@ const baseData = [
   {
     id: uuid(),
     name: 'In Progress',
-    cards: [
-      {
-        id: uuid(),
-        name: 'card In Progress',
-        description: 'description',
-        comments: [],
-        user: {
-          id: uuid(),
-          fullName: '',
-          avatarUrl: 'www.google.com',
-        },
-      },
-    ],
+    cards: [],
   },
   {
     id: uuid(),
     name: 'Testing',
-    cards: [
-      {
-        id: uuid(),
-        name: 'card Testing',
-        description: 'description',
-        comments: [],
-        user: {
-          id: uuid(),
-          fullName: '',
-          avatarUrl: 'www.google.com',
-        },
-      },
-    ],
+    cards: [],
   },
   {
     id: uuid(),
     name: 'Done',
-    cards: [
-      {
-        id: uuid(),
-        name: 'card Done',
-        description: 'description',
-        comments: [],
-        user: {
-          id: uuid(),
-          fullName: '',
-          avatarUrl: 'www.google.com',
-        },
-      },
-    ],
+    cards: [],
   },
 ];
 

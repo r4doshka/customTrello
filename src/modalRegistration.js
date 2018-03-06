@@ -15,12 +15,14 @@ class ModalRegistration extends Component {
 
   renderUsers() {
     const users = this.props.users;
-    return Object.keys(users).map(key => {
-      const user = users[key];
-      if(user.fullName){
-        return <li key={key} onClick={() => this.pickUser(user.id)}>{user.fullName}</li>;
-      }
-    });
+    if(users){
+      return Object.keys(users).map(key => {
+        const user = users[key];
+        if(user.fullName){
+          return <li key={key} onClick={() => this.pickUser(user.id)}>{user.fullName}</li>;
+        }
+      });
+    }
   }
 
   createUser = () => {
@@ -34,11 +36,6 @@ class ModalRegistration extends Component {
   pickUser = (id) =>{
     this.props.onPickUser(id);
     //console.log(id);
-  };
-
-  handleHide = () => {
-    // this.props.onHide(this.state.input);
-    console.log('da');
   };
 
   render() {

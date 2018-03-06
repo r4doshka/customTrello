@@ -9,10 +9,7 @@ import normalizeData from './data';
 const savedData = JSON.parse(localStorage.getItem('todoList'));
 const data = normalizeData();
 const entities = savedData || data;
-
-// console.log('tekushie', entities);
-//console.log('sohranennie', savedData);
-//console.log('na4alnie', data);
+const currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
 
 class App extends Component {
   state = {
@@ -23,16 +20,13 @@ class App extends Component {
     users: entities.entities.users,
     input: ' ',
     modal: false,
-    currentUser: ' ',
+    currentUser: currentUser,
   };
 
   componentWillMount() {
-    // this.updateColumns();
-    // this.updateColHeader();
-    // this.modalShowHandle();
-    //console.log('on mount', this.state.cards);
-    // console.log(this.state.columns);
-    //console.log('was ', this.state.columns);
+    if(!currentUser){
+      this.modalShowHandle();
+    }
   }
 
   modalShowHandle = () => {
@@ -45,7 +39,6 @@ class App extends Component {
     this.setState({
       modal: false,
     });
-    // console.log('zakrito')
   };
 
   onCreateUser = ({ fullName, id }) => {
@@ -68,11 +61,18 @@ class App extends Component {
     );
   };
 
-  onPickUser = name => {
-    // this.setState({
-    //   currentUser: name,
-    // })
-    console.log(name);
+  handlePickUser = id => {
+    const currentUser = this.state.users[id].fullName;
+    this.setState(
+      {
+        currentUser: currentUser,
+        modal: false,
+      },
+      localStorage.setItem(
+        'currentUser',
+        JSON.stringify(this.state.currentUser),
+      ),
+    );
   };
 
   updateChanges() {
@@ -274,10 +274,30 @@ class App extends Component {
     );
   };
 
+  handleDescriptionEdit = (text, id) => {
+    //console.log(text, id)
+    this.setState(
+      {
+        cards: {
+          ...this.state.cards,
+          [id]: {
+            ...this.state.cards[id],
+            description: text,
+          },
+        },
+      },
+      () => {
+        this.saveChanges();
+        this.updateChanges();
+      },
+    );
+  };
+
   render() {
-    // console.log('pered renderom cart ', this.state.cards);
+    //console.log('pered renderom cart ', this.state.cards);
     //  console.log('pered renderom column ', this.state.columns);
     //console.log('pered renderom coments ', this.state.comments);
+    // console.log('tekyshii user', this.state.currentUser);
     return (
       <div className="dashboard">
         <ColumnsList
@@ -300,6 +320,7 @@ class App extends Component {
               onAddComment={this.handleCommentAdd}
               onRemoveComment={this.handleCommentRemove}
               onEditComment={this.handleCommentEdit}
+              onEditDescription={this.handleDescriptionEdit}
             />
           )}
         />
@@ -309,7 +330,7 @@ class App extends Component {
             onHide: this.modalHideHandle,
           }}
           onCreateUser={this.onCreateUser}
-          onPickUser={this.onPickUser}
+          onPickUser={this.handlePickUser}
           users={this.state.users}
         />
       </div>

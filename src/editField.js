@@ -1,8 +1,7 @@
 import React, {Component} from "react";
-import { Button, Glyphicon } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
 
-
-class EditComment extends Component {
+class EditField extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -15,9 +14,9 @@ class EditComment extends Component {
   //  console.log(this.state.input)
   };
 
-  handleEditComment = () => {
+  handleEdit = () => {
     // console.log(this.props.type)
-    this.props.onEditComment(this.state.input);
+    this.props.onEditText(this.state.input);
   };
 
   render() {
@@ -32,7 +31,7 @@ class EditComment extends Component {
                 className="textfield"
                 onChange={this.handleText}
               />
-            <Button bsStyle="success" onClick={this.handleEditComment}>
+            <Button bsStyle="success" onClick={this.handleEdit}>
               Apply
             </Button>
           </div>
@@ -42,4 +41,4 @@ class EditComment extends Component {
   }
 }
 
-export default EditComment;
+export default EditField;

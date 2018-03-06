@@ -1,10 +1,30 @@
 import React, { Component } from 'react';
 import { Modal, Button } from 'react-bootstrap';
 import CommentsList from './commentsList';
+import EditField from './editField';
+import EditBox from './editBox';
 
 class ModalCard extends Component {
+  state = {
+    editField: false,
+  };
+
+  showEditField = () => {
+    this.setState({
+      editField: true,
+    });
+  };
+
+  handleEditDescriptionEdit = (text) => {
+   // console.log(this.props);
+    this.props.onEditDescription(text, this.props.card);
+    this.setState({
+      editField: false,
+    });
+  };
+
   render() {
-    //  console.log(this.props.comments[this.props.commentIds], )
+      //console.log(this.props.description, this.props.card )
     return (
       <Modal
         {...this.props}
@@ -13,15 +33,38 @@ class ModalCard extends Component {
       >
         <Modal.Header closeButton>
           <Modal.Title id="contained-modal-title-lg">
-            {this.props.colname}
+            {/*{this.props.colname}*/}
+            <EditBox
+              onHeaderChange={this.props.onColHeaderChange}
+              heading={this.props.colname}
+              clickable
+              column={this.props.column}
+            />
           </Modal.Title>
         </Modal.Header>
         <Modal.Body>
           <div className="header">
-            <h4>{this.props.title}</h4>
+            <div className='user'>
+              <i>created by <b>{this.props.user}</b></i>
+            </div>
+            <EditBox
+              heading={this.props.title}
+              onHeaderChange={this.props.onCardHeaderChange}
+              clickable
+              card={this.props.card}
+            />
           </div>
-          <div className="description">
-            <p>{this.props.description}</p>
+          <div className="description-box">
+            {!this.state.editField ? (
+              <div className="group">
+                <div className="description">{this.props.description}</div>
+                <button className="btn-link btn-link_secondary" onClick={this.showEditField}>
+                  Edit description
+                </button>
+              </div>
+            ) : (
+              <EditField currentText={this.props.description} onEditText={this.handleEditDescriptionEdit}/>
+            )}
           </div>
           <CommentsList
             onAddComment={this.props.onAddComment}

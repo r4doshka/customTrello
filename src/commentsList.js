@@ -38,6 +38,7 @@ class CommentsList extends Component {
             value={this.state.text}
             className="textfield"
             onChange={this.handleComment}
+            placeholder='Enter comment'
           />
           <Button
             bsStyle="success"

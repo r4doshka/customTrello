@@ -27,7 +27,7 @@ class ColumnsListItem extends Component {
     const { columns, user, cards } = todoList;
     const columnCurrent = columns[this.props.columnCurrent];
 
-   //console.log(todoList);
+   //console.log(this.props.user);
     return (
       <Col md={3} key={columnCurrent}>
         <div className="col">
@@ -44,6 +44,7 @@ class ColumnsListItem extends Component {
             cards={cards}
             cardRenderer={card => (
               <CardListItem
+                onColHeaderChange={this.props.onColHeaderChange}
                 onCardHeaderChange={this.props.onCardHeaderChange}
                 user={user}
                 column={this.props.columnCurrent}
@@ -53,6 +54,7 @@ class ColumnsListItem extends Component {
                 onAddComment={this.props.onAddComment}
                 onRemoveComment={this.props.onRemoveComment}
                 onEditComment={this.props.onEditComment}
+                onEditDescription={this.props.onEditDescription}
               />
             )}
           />

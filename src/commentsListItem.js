@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import EditComment from './editComment';
+import EditField from './editField';
 
 class CommentsListItem extends Component {
   state = {
@@ -18,12 +18,12 @@ class CommentsListItem extends Component {
     this.props.onRemoveComment(id, this.props.cardId);
   };
 
-  handleEditCommentApply = (text) =>{
+  handleEditCommentApply = text => {
     this.props.onEditComment(text, this.props.commentId);
     this.setState({
-      editField:false,
-    })
-  }
+      editField: false,
+    });
+  };
 
   render() {
     const comment = this.props;
@@ -49,10 +49,10 @@ class CommentsListItem extends Component {
             </div>
           </div>
         ) : (
-          <EditComment
+          <EditField
             currentText={comments[commentId].text}
             cardId={this.props.cardId}
-            onEditComment={this.handleEditCommentApply}
+            onEditText={this.handleEditCommentApply}
           />
         )}
       </li>

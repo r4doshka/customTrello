@@ -18,7 +18,7 @@ class ModalRegistration extends Component {
     return Object.keys(users).map(key => {
       const user = users[key];
       if(user.fullName){
-        return <li key={key} onChange={this.pickUser(user.fullName)}>{user.fullName}</li>;
+        return <li key={key} onClick={() => this.pickUser(user.id)}>{user.fullName}</li>;
       }
     });
   }
@@ -31,10 +31,9 @@ class ModalRegistration extends Component {
     })
   };
 
-  pickUser = (name) =>{
-   // console.log(name)
-   // this.props.onPickUser(name);
-   // this.props.modalProps.onHide();
+  pickUser = (id) =>{
+    this.props.onPickUser(id);
+    //console.log(id);
   };
 
   handleHide = () => {
@@ -53,7 +52,7 @@ class ModalRegistration extends Component {
         <Modal.Body>
           <Row>
             <Col md={6}>
-              <h4>Please enter Your name</h4>
+              <h4>Sozdai</h4>
               <input
                 type="text"
                 ref={input => input && input.focus()}
@@ -66,6 +65,7 @@ class ModalRegistration extends Component {
               {/*onClick={this.props.onHide}*/}
             </Col>
             <Col md={6}>
+              <h4>Viberi</h4>
               <ul className='list'>
                 {this.renderUsers()}
               </ul>

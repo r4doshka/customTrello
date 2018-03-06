@@ -26,12 +26,11 @@ class CardListItem extends Component {
     this.setState({ modal: false });
   };
 
-
   render() {
     const remark = 'vvedite nazvanie karto4ki';
     const card = this.props.card;
     const { id, name, description, comments } = card;
-     //console.log(comments.length)
+     //console.log(this.props.user)
     return (
       <div className="card">
         <div className="card-inner" onClick={this.modalShowHandle}>
@@ -45,7 +44,7 @@ class CardListItem extends Component {
             />
           </div>
           <div className="card__description">
-            <p className="description">{description}</p>
+            {description}
           </div>
           <div className="card__group">
             <div className="card__count">
@@ -53,7 +52,7 @@ class CardListItem extends Component {
               <span>{comments.length}</span>
             </div>
             <div className="card__name">
-              <div className="author">Author : {this.props.user ? this.props.user.name : ' '}</div>
+              <div className="author">Author : {this.props.user ? this.props.user : ' '}</div>
             </div>
           </div>
         </div>
@@ -64,15 +63,19 @@ class CardListItem extends Component {
           <Glyphicon glyph="remove" />
         </button>
         <ModalCard
+          onColHeaderChange={this.props.onColHeaderChange}
+          onCardHeaderChange={this.props.onCardHeaderChange}
           onAddComment={this.props.onAddComment}
           onRemoveComment={this.props.onRemoveComment}
           onEditComment={this.props.onEditComment}
+          onEditDescription={this.props.onEditDescription}
           show={this.state.modal}
           onHide={this.modalHideHandle}
           description={description}
           title={name}
           colname={this.props.colname}
           card={id}
+          user={this.props.user}
           commentids={comments}
           comments={this.props.comments}
         />

@@ -15,15 +15,13 @@ html, body, #root{
     margin: 0;
     font-size: 18px;
     white-space: nowrap;
-    max-width: 100%;
+    max-width: calc(100% - 20px);
     overflow: hidden;
     text-overflow: ellipsis;
 }
 .header-group{
     margin: 0 0 20px;
 }
-
-
 
 .edit-box .edit-box__group{
     display: flex;
@@ -32,7 +30,6 @@ html, body, #root{
     padding: 5px;
     margin-left: 5px;
     flex: 1 1 auto;
-
 }
 
 .col{
@@ -76,6 +73,8 @@ html, body, #root{
 .card__description{
     min-height: 20px;
     margin-bottom: 20px;
+    max-height: 100px;
+    overflow: hidden;
 }
 .card-box{
     margin-bottom: 20px;
@@ -153,7 +152,7 @@ html, body, #root{
 }
 
 .modal-body .description{
-    margin: 0 0 40px;
+    margin: 0 0 15px;
 }
 
 .textfield{
@@ -208,8 +207,28 @@ html, body, #root{
     align-items: flex-start;
 }
 
+.btn-link.btn-link_secondary{
+    margin-bottom: 40px;
+}
+
 .btn-link:focus, .btn-link:active {
     outline: none;
+}
+
+.edit-panel{
+    margin-bottom: 40px;
+}
+
+.user{
+    margin-bottom: 40px;
+}
+
+.modal-content .edit-box .btn{
+    flex: 0 1 100px;
+}
+
+.modal-content .edit-panel .edit-box .btn{
+    flex: 1 1 auto;
 }
 
 @keyframes scale {

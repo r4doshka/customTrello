@@ -31,7 +31,7 @@ class CardListItem extends Component {
     const remark = 'vvedite nazvanie karto4ki';
     const card = this.props.card;
     const { id, name, description, comments } = card;
-     //console.log(this.props.card.comment)
+     //console.log(comments.length)
     return (
       <div className="card">
         <div className="card-inner" onClick={this.modalShowHandle}>
@@ -49,8 +49,8 @@ class CardListItem extends Component {
           </div>
           <div className="card__group">
             <div className="card__count">
-              <Glyphicon glyph="comment" />
-              <span> 0 </span>
+              <Glyphicon glyph="comment" /> &nbsp;
+              <span>{comments.length}</span>
             </div>
             <div className="card__name">
               <div className="author">Author : {this.props.user ? this.props.user.name : ' '}</div>
@@ -64,7 +64,9 @@ class CardListItem extends Component {
           <Glyphicon glyph="remove" />
         </button>
         <ModalCard
-          addCommentHandle={this.props.addCommentHandle}
+          onAddComment={this.props.onAddComment}
+          onRemoveComment={this.props.onRemoveComment}
+          onEditComment={this.props.onEditComment}
           show={this.state.modal}
           onHide={this.modalHideHandle}
           description={description}

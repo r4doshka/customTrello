@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import Comments from './comments';
+import CommentsList from './commentsList';
 
 class ModalCard extends Component {
   render() {
-  //  console.log(this.props.comments[this.props.commentIds], )
+    //  console.log(this.props.comments[this.props.commentIds], )
     return (
       <Modal
         {...this.props}
@@ -23,7 +23,14 @@ class ModalCard extends Component {
           <div className="description">
             <p>{this.props.description}</p>
           </div>
-          <Comments addCommentHandle={this.props.addCommentHandle} commentids={this.props.commentids} comments={this.props.comments} cardId={this.props.card}/>
+          <CommentsList
+            onAddComment={this.props.onAddComment}
+            onRemoveComment={this.props.onRemoveComment}
+            onEditComment={this.props.onEditComment}
+            commentids={this.props.commentids}
+            comments={this.props.comments}
+            cardId={this.props.card}
+          />
         </Modal.Body>
         <Modal.Footer>
           <Button onClick={this.props.onHide}>Close</Button>

@@ -69,6 +69,14 @@ html, body, #root{
     display: flex;
     justify-content: space-between;
 }
+.card__count{
+    display: flex;
+    align-items: center;
+}
+.card__description{
+    min-height: 20px;
+    margin-bottom: 20px;
+}
 .card-box{
     margin-bottom: 20px;
 }
@@ -186,7 +194,6 @@ html, body, #root{
     line-height: 16px;
     background: #fff;
     border-radius: 5px;
-
 }
 
 .comments-box__group{
@@ -194,6 +201,15 @@ html, body, #root{
     flex-direction: column;
     margin-bottom: 40px;
     align-items: flex-start;
+}
+
+.edit-panel .edit-box__group{
+    flex-direction: column;
+    align-items: flex-start;
+}
+
+.btn-link:focus, .btn-link:active {
+    outline: none;
 }
 
 @keyframes scale {

@@ -5,19 +5,20 @@ const baseData = [
   {
     id: uuid(),
     name: 'TODO',
-    cards: [
-      {
-        id: uuid(),
-        name: 'card Todo',
-        description: 'description',
-        comments: [],
-        user: {
-          id: uuid(),
-          fullName: '',
-          avatarUrl: 'www.google.com',
-        },
-      },
-    ],
+    cards: [],
+    // cards: [
+    //   {
+    //     id: uuid(),
+    //     name: 'card Todo',
+    //     description: 'description',
+    //     comments: [],
+    //     user: {
+    //       id: uuid(),
+    //       fullName: '',
+    //       avatarUrl: 'www.google.com',
+    //     },
+    //   },
+    // ],
   },
   {
     id: uuid(),

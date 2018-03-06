@@ -146,7 +146,8 @@ class App extends Component {
           [columnId]: {
             ...this.state.columns[columnId],
             cards: [
-              this.state.columns[columnId].cards.filter(card => {
+              ...this.state.columns[columnId].cards.filter(card => {
+                //console.log( this.state.columns[columnId].cards)
                 return card !== cardId;
               }),
             ],
@@ -199,9 +200,8 @@ class App extends Component {
     );
   };
 
-  AddCommentHandle = (text, id) => {
-    console.log(this.state.comments);
-
+  handleCommentAdd = (text, id) => {
+    //   console.log(this.state.comments);
     const newCommentId = uuid();
     this.setState(
       {
@@ -228,9 +228,56 @@ class App extends Component {
     );
   };
 
+  handleCommentRemove = (commentId, cardId) => {
+    const comments = { ...this.state.comments };
+    // console.log(comments, comments[commentId]);
+    delete comments[commentId];
+    this.setState(
+      {
+        comments,
+        cards: {
+          ...this.state.cards,
+          [cardId]: {
+            ...this.state.cards[cardId],
+            comments: [
+              ...this.state.cards[cardId].comments.filter(comment => {
+                return comment !== commentId;
+              }),
+            ],
+          },
+        },
+      },
+      () => {
+        //    console.log('posle udaleniya comenta', this.state.comments);
+        this.saveChanges();
+        this.updateChanges();
+      },
+    );
+  };
+
+  handleCommentEdit = (text, commentId) => {
+    //  console.log(this.state);
+    this.setState(
+      {
+        comments: {
+          ...this.state.comments,
+          [commentId]: {
+            ...this.state.comments[commentId],
+            text: text,
+          },
+        },
+      },
+      () => {
+        this.saveChanges();
+        this.updateChanges();
+      },
+    );
+  };
+
   render() {
-    //   console.log('pered renderom cart ', this.state.cards);
-    //   console.log('pered renderom column ', this.state.columns);
+    // console.log('pered renderom cart ', this.state.cards);
+    //  console.log('pered renderom column ', this.state.columns);
+    //console.log('pered renderom coments ', this.state.comments);
     return (
       <div className="dashboard">
         <ColumnsList
@@ -250,7 +297,9 @@ class App extends Component {
                 this.handleColHeaderChange(text, column)
               }
               onCardHeaderChange={this.handleCardHeaderChange}
-              addCommentHandle={this.AddCommentHandle}
+              onAddComment={this.handleCommentAdd}
+              onRemoveComment={this.handleCommentRemove}
+              onEditComment={this.handleCommentEdit}
             />
           )}
         />

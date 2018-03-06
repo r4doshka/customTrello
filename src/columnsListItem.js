@@ -27,7 +27,7 @@ class ColumnsListItem extends Component {
     const { columns, user, cards } = todoList;
     const columnCurrent = columns[this.props.columnCurrent];
 
-  // console.log(columnCurrent);
+   //console.log(todoList);
     return (
       <Col md={3} key={columnCurrent}>
         <div className="col">
@@ -50,7 +50,9 @@ class ColumnsListItem extends Component {
                 onRemoveCard={this.props.onRemoveCard}
                 colname={columnCurrent.name}
                 comments={this.props.comments}
-                addCommentHandle={this.props.addCommentHandle}
+                onAddComment={this.props.onAddComment}
+                onRemoveComment={this.props.onRemoveComment}
+                onEditComment={this.props.onEditComment}
               />
             )}
           />

@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 class CardList extends Component {
   renderCards(cards) {
+  //  console.log(cards)
     return cards.map((id, index) => {
       return React.cloneElement(
         this.props.cardRenderer(this.props.cards[id], index),

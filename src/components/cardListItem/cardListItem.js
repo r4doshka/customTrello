@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { Glyphicon } from 'react-bootstrap';
-import ModalCard from './modalCard';
-import EditBox from './editBox';
+import ModalCard from '../modalCard/modalCard';
+import EditBox from '../editBox/editBox';
 
 class CardListItem extends Component {
   constructor(props) {
@@ -28,9 +28,10 @@ class CardListItem extends Component {
 
   render() {
     const remark = 'vvedite nazvanie karto4ki';
+    //console.log(this.props.card);
     const card = this.props.card;
     const { id, name, description, comments } = card;
-     //console.log(this.props.user)
+
     return (
       <div className="card">
         <div className="card-inner" onClick={this.modalShowHandle}>

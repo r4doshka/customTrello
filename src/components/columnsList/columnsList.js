@@ -9,7 +9,8 @@ class ColumnsList extends Component {
         key: id,
         cards: this.props.cards,
         columns: this.props.columns,
-        columnIds:columnsIds
+        columnIds:columnsIds,
+        columnCurrent: id
       });
     });
   }

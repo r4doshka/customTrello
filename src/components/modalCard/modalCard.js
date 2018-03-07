@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Modal, Button } from 'react-bootstrap';
-import CommentsList from './commentsList';
-import EditField from './editField';
-import EditBox from './editBox';
+import CommentsList from '../commentsList/commentsList';
+import EditField from '../editField/editField';
+import EditBox from '../editBox/editBox';
 
 class ModalCard extends Component {
   state = {

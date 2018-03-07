@@ -66,7 +66,6 @@ class ModalRegistration extends Component {
               <ul className='list'>
                 {this.renderUsers()}
               </ul>
-
             </Col>
           </Row>
         </Modal.Body>

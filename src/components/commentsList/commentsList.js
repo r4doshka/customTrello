@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Button } from 'react-bootstrap';
-import CommentsListItem from './commentsListItem';
+import CommentsListItem from '../commentsListItem/commentsListItem';
 
 class CommentsList extends Component {
   state = {

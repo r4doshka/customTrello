@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import EditField from './editField';
+import EditField from '../editField/editField';
 
 class CommentsListItem extends Component {
   state = {

@@ -1,21 +1,47 @@
 import React, { Component } from 'react';
-import './App.css';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import '../styles/App.css';
 import uuid from 'uuid/v1';
-import ColumnsList from './columnsList';
-import ColumnsListItem from './columnsListItem';
-import ModalRegistration from './modalRegistration';
-import normalizeData from './data';
+import ColumnsList from '../components/columnsList';
+import ColumnsListItem from '../components/columnsListItem';
+import ModalRegistration from '../components/modalRegistration';
+import normalizeData from '../data';
+import {updateColumnHeader, createCard} from '../reducers/actions';
 
 const savedData = JSON.parse(localStorage.getItem('todoList'));
 const data = normalizeData();
 const entities = savedData || data;
 const currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
 
+//console.log(data)
+
+const mapStateToProps = state => {
+  return {
+    columns: state.columns,
+    columnsIds: state.columnsIds,
+    cards: state.cards,
+  }
+}
+
+const mapDispatchToProps = dispatch => {
+  return {
+    actions: bindActionCreators(
+      {
+        updateColumnHeader,
+        createCard
+      },
+      dispatch,
+    ),
+  };
+};
+
+
 class App extends Component {
   state = {
-    columnsIds: entities.result,
-    columns: entities.entities.columns,
-    cards: entities.entities.cards,
+    //columnsIds: entities.result,
+  //  columns: entities.entities.columns,
+   // cards: entities.entities.cards,
     comments: entities.entities.comments,
     users: entities.entities.users,
     input: ' ',
@@ -104,34 +130,36 @@ class App extends Component {
     this.setState({ input: e.target.value });
   };
 
-  handleCreateCard = (text, id) => {
-    const newCardId = uuid();
-    this.setState(
-      {
-        cards: {
-          ...this.state.cards,
-          [newCardId]: {
-            id: newCardId,
-            name: text,
-            description: '',
-            comments: [],
-            user: uuid(),
-          },
-        },
-        columns: {
-          ...this.state.columns,
-          [id]: {
-            ...this.state.columns[id],
-            cards: [...this.state.columns[id].cards, newCardId],
-          },
-        },
-      },
-      () => {
-        //console.log('posle sozdaniya', this.state.cards, this.state.columns);
-        this.saveChanges();
-        this.updateChanges();
-      },
-    );
+  handleCreateCard = (text, columnId) => {
+    const CardId = uuid();
+    this.props.actions.createCard({text, columnId, CardId});
+
+    // this.setState(
+    //   {
+    //     cards: {
+    //       ...this.state.cards,
+    //       [newCardId]: {
+    //         id: newCardId,
+    //         name: text,
+    //         description: '',
+    //         comments: [],
+    //         user: uuid(),
+    //       },
+    //     },
+    //     columns: {
+    //       ...this.state.columns,
+    //       [id]: {
+    //         ...this.state.columns[id],
+    //         cards: [...this.state.columns[id].cards, newCardId],
+    //       },
+    //     },
+    //   },
+    //   () => {
+    //     //console.log('posle sozdaniya', this.state.cards, this.state.columns);
+    //     this.saveChanges();
+    //     this.updateChanges();
+    //   },
+    // );
   };
 
   handleRemoveCard = (cardId, columnId) => {
@@ -163,22 +191,7 @@ class App extends Component {
   };
 
   handleColHeaderChange = (newHeader, id) => {
-    //console.log(newHeader, id, this.state.columns[id])
-    this.setState(
-      {
-        columns: {
-          ...this.state.columns,
-          [id]: {
-            ...this.state.columns[id],
-            name: newHeader,
-          },
-        },
-      },
-      () => {
-        this.saveChanges();
-        this.updateChanges();
-      },
-    );
+    this.props.actions.updateColumnHeader({newHeader, id});
   };
 
   handleCardHeaderChange = (newHeader, id) => {
@@ -294,16 +307,17 @@ class App extends Component {
   };
 
   render() {
-    //console.log('pered renderom cart ', this.state.cards);
-    //  console.log('pered renderom column ', this.state.columns);
-    //console.log('pered renderom coments ', this.state.comments);
+    console.log('pered renderom cart ', this.props.cards);
+     // console.log('pered renderom column ', this.props.columns);
+   // console.log('pered renderom coments ', this.state.comments);
     // console.log('tekyshii user', this.state.currentUser);
+
     return (
       <div className="dashboard">
         <ColumnsList
-          columnsIds={this.state.columnsIds}
-          columns={this.state.columns}
-          cards={this.state.cards}
+          columnsIds={this.props.columnsIds}
+          columns={this.props.columns}
+          cards={this.props.cards}
           columnRenderer={(column, index) => (
             <ColumnsListItem
               columnCurrent={column}
@@ -338,4 +352,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default connect(mapStateToProps, mapDispatchToProps)(App);

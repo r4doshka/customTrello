@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import { Col, Button } from 'react-bootstrap';
-import CardList from './cardList';
-import CardListItem from './cardListItem';
-import EditBox from './editBox';
+import CardList from '../cardList/cardList';
+import CardListItem from '../cardListItem/cardListItem';
+import EditBox from '../editBox/editBox';
 
 class ColumnsListItem extends Component {
   state = {
@@ -26,8 +26,8 @@ class ColumnsListItem extends Component {
     const todoList = this.props;
     const { columns, user, cards } = todoList;
     const columnCurrent = columns[this.props.columnCurrent];
-
-   //console.log(this.props.user);
+   //console.log('colonki', columns[this.props.columnCurrent], columns[this.props.columnCurrent].cards);
+   //console.log('cards', cards);
     return (
       <Col md={3} key={columnCurrent}>
         <div className="col">
@@ -44,6 +44,7 @@ class ColumnsListItem extends Component {
             cards={cards}
             cardRenderer={card => (
               <CardListItem
+                key={columnCurrent}
                 onColHeaderChange={this.props.onColHeaderChange}
                 onCardHeaderChange={this.props.onCardHeaderChange}
                 user={user}

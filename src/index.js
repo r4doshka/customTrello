@@ -2,32 +2,35 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider } from 'react-redux';
 import configureStore from './store';
-
+import { loadState, saveState } from './localStorage';
 import reducers from './reducers';
 import { loadInitialData } from './reducers/actions';
-
+import throttle from 'lodash/throttle';
 import './styles/index.css';
 import App from './containers/App';
 import registerServiceWorker from './registerServiceWorker';
-import uuid from 'uuid/v1';
 import normalizeData from './data';
 
-const entities = normalizeData();
+const persistedState = loadState();
+const entities = normalizeData(persistedState);
+
+//console.log('persisted', entities, persistedState);
 
 const data = {
-  columnsIds: entities.result,
-  columns: entities.entities.columns,
-  cards: entities.entities.cards,
-  comments: entities.entities.comments,
-  users: entities.entities.users,
+  columnsIds: entities.columnsIds,
+  columns: entities.columns,
+  cards: entities.cards,
+  comments: entities.comments,
+  users: entities.users,
+  currentUser: entities.currentUser ,
 };
 
 
-const store = configureStore(reducers);
+const store = configureStore(reducers, persistedState);
 
-store.subscribe(() => {
-  // persist your state
-})
+store.subscribe(throttle(() => {
+  saveState(store.getState());
+}), 1000);
 
 store.dispatch(loadInitialData(data));
 

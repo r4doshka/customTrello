@@ -11,7 +11,7 @@ export default handleActions(
       return cards || {};
     },
     [types.CREATE_CARD]: (state, action) => {
-      const { text,  CardId } = action.payload;
+      const { text, CardId, userId } = action.payload;
       return {
         ...state,
         [CardId]: {
@@ -19,7 +19,57 @@ export default handleActions(
           name: text,
           description: '',
           comments: [],
-          user: uuid(),
+          user: userId,
+        },
+      };
+    },
+    [types.REMOVE_CARD]: (state, action) => {
+      const { cardId } = action.payload;
+      const newState = { ...state };
+      delete newState[cardId];
+      return newState;
+    },
+    [types.UPDATE_CARD_HEADER]: (state, action) => {
+      const { newHeader, id } = action.payload;
+      return {
+        ...state,
+        [id]: {
+          ...state[id],
+          name: newHeader,
+        },
+      };
+    },
+    [types.CREATE_COMMENT]: (state, action) => {
+      const { cardId, newCommentId } = action.payload;
+      return {
+        ...state,
+        [cardId]: {
+          ...state[cardId],
+          comments: [...state[cardId].comments, newCommentId],
+        },
+      };
+    },
+    [types.REMOVE_COMMENT]: (state, action) => {
+      const { commentId, cardId } = action.payload;
+      return {
+        ...state,
+        [cardId]: {
+          ...state[cardId],
+          comments: [
+            ...state[cardId].comments.filter(comment => {
+              return comment !== commentId;
+            }),
+          ],
+        },
+      };
+    },
+    [types.EDIT_CARD_DESCRIPTION]: (state, action) => {
+      const { text, id } = action.payload;
+      return {
+        ...state,
+        [id]: {
+          ...state[id],
+          description: text,
         },
       };
     },

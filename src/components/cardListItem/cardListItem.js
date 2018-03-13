@@ -8,16 +8,15 @@ class CardListItem extends Component {
     super(props);
     this.state = {
       modal: false,
-      showInput: false
+      showInput: false,
     };
   }
 
   handleRemove = () => {
-    //console.log(this.props.column)
     this.props.onRemoveCard(this.props.card.id, this.props.column);
   };
 
-  modalShowHandle = (e) => {
+  modalShowHandle = e => {
     e.nativeEvent.stopImmediatePropagation();
     this.setState({ modal: true });
   };
@@ -28,10 +27,10 @@ class CardListItem extends Component {
 
   render() {
     const remark = 'vvedite nazvanie karto4ki';
-    //console.log(this.props.card);
     const card = this.props.card;
+    const { currentUser } = this.props;
+    const author = this.props.users[this.props.card.user];
     const { id, name, description, comments } = card;
-
     return (
       <div className="card">
         <div className="card-inner" onClick={this.modalShowHandle}>
@@ -44,16 +43,14 @@ class CardListItem extends Component {
               card={id}
             />
           </div>
-          <div className="card__description">
-            {description}
-          </div>
+          <div className="card__description">{description}</div>
           <div className="card__group">
             <div className="card__count">
               <Glyphicon glyph="comment" /> &nbsp;
               <span>{comments.length}</span>
             </div>
             <div className="card__name">
-              <div className="author">Author : {this.props.user ? this.props.user : ' '}</div>
+              <div className="author">Author: {author.fullName}</div>
             </div>
           </div>
         </div>
@@ -76,7 +73,7 @@ class CardListItem extends Component {
           title={name}
           colname={this.props.colname}
           card={id}
-          user={this.props.user}
+          user={author}
           commentids={comments}
           comments={this.props.comments}
         />

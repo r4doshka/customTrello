@@ -6,324 +6,126 @@ import uuid from 'uuid/v1';
 import ColumnsList from '../components/columnsList';
 import ColumnsListItem from '../components/columnsListItem';
 import ModalRegistration from '../components/modalRegistration';
-import normalizeData from '../data';
-import {updateColumnHeader, createCard} from '../reducers/actions';
+import {
+  updateColumnHeader,
+  createCard,
+  removeCard,
+  updateCardHeader,
+  createComment,
+  removeComment,
+  editComment,
+  editCardDescription,
+  createUser,
+  pickUser,
+  logout,
+} from '../reducers/actions';
 
-const savedData = JSON.parse(localStorage.getItem('todoList'));
-const data = normalizeData();
-const entities = savedData || data;
-const currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
-
-//console.log(data)
+import { currentUserSelector } from "../selectors";
 
 const mapStateToProps = state => {
   return {
     columns: state.columns,
     columnsIds: state.columnsIds,
     cards: state.cards,
-  }
-}
+    comments: state.comments,
+    users: state.users,
+    currentUser: currentUserSelector(state),
+  };
+};
 
 const mapDispatchToProps = dispatch => {
   return {
     actions: bindActionCreators(
       {
         updateColumnHeader,
-        createCard
+        createCard,
+        removeCard,
+        updateCardHeader,
+        createComment,
+        removeComment,
+        editComment,
+        editCardDescription,
+        createUser,
+        pickUser,
+        logout
       },
       dispatch,
     ),
   };
 };
 
-
 class App extends Component {
   state = {
-    //columnsIds: entities.result,
-  //  columns: entities.entities.columns,
-   // cards: entities.entities.cards,
-    comments: entities.entities.comments,
-    users: entities.entities.users,
     input: ' ',
-    modal: false,
-    currentUser: currentUser,
-  };
-
-  componentWillMount() {
-    if(!currentUser){
-      this.modalShowHandle();
-    }
-  }
-
-  modalShowHandle = () => {
-    this.setState({
-      modal: true,
-    });
-  };
-
-  modalHideHandle = () => {
-    this.setState({
-      modal: false,
-    });
   };
 
   onCreateUser = ({ fullName, id }) => {
-    this.setState(
-      {
-        users: {
-          ...this.state.users,
-          [id]: {
-            id,
-            fullName,
-            avatarUrl: '',
-          },
-        },
-        currentUser: fullName,
-      },
-      () => {
-        this.saveChanges();
-        this.updateChanges();
-      },
-    );
+    this.props.actions.createUser({ fullName, id });
   };
 
   handlePickUser = id => {
-    const currentUser = this.state.users[id].fullName;
-    this.setState(
-      {
-        currentUser: currentUser,
-        modal: false,
-      },
-      localStorage.setItem(
-        'currentUser',
-        JSON.stringify(this.state.currentUser),
-      ),
-    );
+    this.props.actions.pickUser({id});
   };
-
-  updateChanges() {
-    const cachedColumns = JSON.parse(localStorage.getItem('todoList'));
-    //   console.log(cachedColumns, this.state);
-    if (cachedColumns) {
-      this.setState({ entities: cachedColumns.entities });
-    }
-    // console.log('update ', this.state)
-  }
-
-  saveChanges() {
-    // console.log('save ',this.state)
-    localStorage.setItem(
-      'todoList',
-      JSON.stringify({
-        result: this.state.columnsIds,
-        entities: {
-          columns: this.state.columns,
-          cards: this.state.cards,
-          comments: this.state.comments,
-          users: this.state.users,
-        },
-      }),
-    );
-  }
 
   handleInput = e => {
     this.setState({ input: e.target.value });
   };
 
-  handleCreateCard = (text, columnId) => {
+  handleCreateCard = (text, columnId, userId) => {
     const CardId = uuid();
-    this.props.actions.createCard({text, columnId, CardId});
-
-    // this.setState(
-    //   {
-    //     cards: {
-    //       ...this.state.cards,
-    //       [newCardId]: {
-    //         id: newCardId,
-    //         name: text,
-    //         description: '',
-    //         comments: [],
-    //         user: uuid(),
-    //       },
-    //     },
-    //     columns: {
-    //       ...this.state.columns,
-    //       [id]: {
-    //         ...this.state.columns[id],
-    //         cards: [...this.state.columns[id].cards, newCardId],
-    //       },
-    //     },
-    //   },
-    //   () => {
-    //     //console.log('posle sozdaniya', this.state.cards, this.state.columns);
-    //     this.saveChanges();
-    //     this.updateChanges();
-    //   },
-    // );
+    //console.log(text, columnId, userId)
+    this.props.actions.createCard({ text, columnId, CardId, userId });
   };
 
   handleRemoveCard = (cardId, columnId) => {
-    const cards = { ...this.state.cards };
-    delete cards[cardId];
-
-    this.setState(
-      {
-        cards,
-        columns: {
-          ...this.state.columns,
-          [columnId]: {
-            ...this.state.columns[columnId],
-            cards: [
-              ...this.state.columns[columnId].cards.filter(card => {
-                //console.log( this.state.columns[columnId].cards)
-                return card !== cardId;
-              }),
-            ],
-          },
-        },
-      },
-      () => {
-        // console.log('posle udaleniya ', this.state);
-        this.saveChanges();
-        this.updateChanges();
-      },
-    );
+    this.props.actions.removeCard({ cardId, columnId });
   };
 
   handleColHeaderChange = (newHeader, id) => {
-    this.props.actions.updateColumnHeader({newHeader, id});
+    this.props.actions.updateColumnHeader({ newHeader, id });
   };
 
   handleCardHeaderChange = (newHeader, id) => {
-    //console.log(newHeader, id, this.state.cards[id] );
-    this.setState(
-      {
-        cards: {
-          ...this.state.cards,
-          [id]: {
-            ...this.state.cards[id],
-            name: newHeader,
-          },
-        },
-      },
-      () => {
-        this.saveChanges();
-        this.updateChanges();
-      },
-    );
+    this.props.actions.updateCardHeader({ newHeader, id });
   };
 
-  handleCommentAdd = (text, id) => {
-    //   console.log(this.state.comments);
+  handleCommentAdd = (text, cardId) => {
     const newCommentId = uuid();
-    this.setState(
-      {
-        comments: {
-          ...this.state.comments,
-          [newCommentId]: {
-            id: newCommentId,
-            text: text,
-            user: uuid(),
-          },
-        },
-        cards: {
-          ...this.state.cards,
-          [id]: {
-            ...this.state.cards[id],
-            comments: [...this.state.cards[id].comments, newCommentId],
-          },
-        },
-      },
-      () => {
-        this.saveChanges();
-        this.updateChanges();
-      },
-    );
+    this.props.actions.createComment({ text, cardId, newCommentId });
   };
 
   handleCommentRemove = (commentId, cardId) => {
-    const comments = { ...this.state.comments };
-    // console.log(comments, comments[commentId]);
-    delete comments[commentId];
-    this.setState(
-      {
-        comments,
-        cards: {
-          ...this.state.cards,
-          [cardId]: {
-            ...this.state.cards[cardId],
-            comments: [
-              ...this.state.cards[cardId].comments.filter(comment => {
-                return comment !== commentId;
-              }),
-            ],
-          },
-        },
-      },
-      () => {
-        //    console.log('posle udaleniya comenta', this.state.comments);
-        this.saveChanges();
-        this.updateChanges();
-      },
-    );
+    this.props.actions.removeComment({ commentId, cardId });
   };
 
   handleCommentEdit = (text, commentId) => {
-    //  console.log(this.state);
-    this.setState(
-      {
-        comments: {
-          ...this.state.comments,
-          [commentId]: {
-            ...this.state.comments[commentId],
-            text: text,
-          },
-        },
-      },
-      () => {
-        this.saveChanges();
-        this.updateChanges();
-      },
-    );
+    this.props.actions.editComment({ text, commentId });
   };
 
   handleDescriptionEdit = (text, id) => {
-    //console.log(text, id)
-    this.setState(
-      {
-        cards: {
-          ...this.state.cards,
-          [id]: {
-            ...this.state.cards[id],
-            description: text,
-          },
-        },
-      },
-      () => {
-        this.saveChanges();
-        this.updateChanges();
-      },
-    );
+    this.props.actions.editCardDescription({ text, id });
   };
 
-  render() {
-    console.log('pered renderom cart ', this.props.cards);
-     // console.log('pered renderom column ', this.props.columns);
-   // console.log('pered renderom coments ', this.state.comments);
-    // console.log('tekyshii user', this.state.currentUser);
+  handleExit = () =>{
+    this.props.actions.logout();
+  }
 
+  render() {
+   // console.log(this.props)
     return (
       <div className="dashboard">
-        <ColumnsList
+        <button className="btn btn-action" onClick={this.handleExit}>Log OUT</button>
+        {!!this.props.currentUser && <ColumnsList
           columnsIds={this.props.columnsIds}
           columns={this.props.columns}
           cards={this.props.cards}
           columnRenderer={(column, index) => (
             <ColumnsListItem
               columnCurrent={column}
-              user={this.state.currentUser}
+              users={this.props.users}
+              currentUser={this.props.currentUser}
               key={index}
-              comments={this.state.comments}
+              comments={this.props.comments}
               onRemoveCard={this.handleRemoveCard}
               onCreateCard={this.handleCreateCard}
               onEnter={this.handleInput}
@@ -337,15 +139,15 @@ class App extends Component {
               onEditDescription={this.handleDescriptionEdit}
             />
           )}
-        />
+        />}
         <ModalRegistration
           modalProps={{
-            show: this.state.modal,
+            show: !this.props.currentUser,
             onHide: this.modalHideHandle,
           }}
           onCreateUser={this.onCreateUser}
           onPickUser={this.handlePickUser}
-          users={this.state.users}
+          users={this.props.users}
         />
       </div>
     );

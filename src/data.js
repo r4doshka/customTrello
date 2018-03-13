@@ -56,9 +56,19 @@ const columns = new schema.Array(column);
 
 export default (database = null) => {
   try {
-    const data = database || baseData;
-   // console.log(data, columns);
-    return normalize(data, columns)
+      //console.log('baseData ', baseData);
+      const normalizedData = normalize(baseData, columns);
+   //   console.log('normalizedData ', normalizedData);
+      const data = {
+        columnsIds: database.columnsIds || normalizedData.result,
+        columns: database.columns || normalizedData.entities.columns,
+        cards: database.cards || normalizedData.entities.cards || {},
+        comments: database.comments || normalizedData.entities.comments || {},
+        users: database.users || normalizedData.entities.users || {},
+        currentUser: database.currentUser || normalizedData.entities.currentUser || {},
+      }
+   //   console.log('data ', data);
+      return data
   } catch(err) {
     console.log(err.message);
     throw new Error(err);

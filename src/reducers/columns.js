@@ -31,6 +31,20 @@ export default handleActions(
         },
       };
     },
+    [types.REMOVE_CARD]: (state, action) => {
+      const { cardId, columnId } = action.payload;
+      return {
+        ...state,
+        [columnId]: {
+          ...state[columnId],
+          cards: [
+            ...state[columnId].cards.filter(card => {
+              return card !== cardId;
+            }),
+          ],
+        }
+      };
+    },
   },
   initialState,
 );

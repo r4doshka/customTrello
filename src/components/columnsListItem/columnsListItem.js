@@ -15,19 +15,16 @@ class ColumnsListItem extends Component {
     });
   };
 
-  onAddClick = id => {
-   //  console.log( id);
-   this.props.onCreateCard(this.state.text, id);
+  onAddClick = (columnId, userId )=> {
+   this.props.onCreateCard(this.state.text, columnId, userId);
    this.setState({ text: '' });
   };
 
   render() {
     const remark = 'vvedite nazvanie kolonki';
     const todoList = this.props;
-    const { columns, user, cards } = todoList;
+    const { columns, currentUser, cards } = todoList;
     const columnCurrent = columns[this.props.columnCurrent];
-   //console.log('colonki', columns[this.props.columnCurrent], columns[this.props.columnCurrent].cards);
-   //console.log('cards', cards);
     return (
       <Col md={3} key={columnCurrent}>
         <div className="col">
@@ -47,7 +44,8 @@ class ColumnsListItem extends Component {
                 key={columnCurrent}
                 onColHeaderChange={this.props.onColHeaderChange}
                 onCardHeaderChange={this.props.onCardHeaderChange}
-                user={user}
+                currentUser={currentUser}
+                users={this.props.users}
                 column={this.props.columnCurrent}
                 onRemoveCard={this.props.onRemoveCard}
                 colname={columnCurrent.name}
@@ -64,7 +62,7 @@ class ColumnsListItem extends Component {
             value={this.state.text}
             onChange={this.inputHandle}
           />
-          <Button bsStyle="success" onClick={() => this.onAddClick(this.props.columnCurrent)}>
+          <Button bsStyle="success" onClick={() => this.onAddClick(this.props.columnCurrent, currentUser.id)}>
             Add Card
           </Button>
         </div>

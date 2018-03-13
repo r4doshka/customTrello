@@ -45,7 +45,7 @@ class ModalCard extends Component {
         <Modal.Body>
           <div className="header">
             <div className='user'>
-              <i>created by <b>{this.props.user}</b></i>
+              <i>created by <b>{this.props.user.fullName}</b></i>
             </div>
             <EditBox
               heading={this.props.title}

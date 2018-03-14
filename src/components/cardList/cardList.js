@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import QueueAnim from 'rc-queue-anim';
 
 class CardList extends Component {
   renderCards(cards) {
@@ -15,7 +16,7 @@ class CardList extends Component {
   }
   render() {
     const cards = this.props.columnCards;
-    return <div>{this.renderCards(cards)}</div>;
+    return <QueueAnim type='top' interval={300} delay={100} duration={500}>{this.renderCards(cards)}</QueueAnim>;
   }
 }
 

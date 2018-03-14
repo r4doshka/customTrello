@@ -1,5 +1,6 @@
 import React, {Component} from "react";
 import { Grid, Row } from 'react-bootstrap';
+import QueueAnim from 'rc-queue-anim';
 
 class ColumnsList extends Component {
   renderColumns(columnsIds) {
@@ -19,7 +20,9 @@ class ColumnsList extends Component {
     const columnsIds = this.props.columnsIds;
     return (
       <Grid>
-        <Row>{this.renderColumns(columnsIds)}</Row>
+        <Row>
+          <QueueAnim type='right' interval={700} delay={100} duration={1000}>{this.renderColumns(columnsIds)}</QueueAnim>
+        </Row>
       </Grid>
     );
   }

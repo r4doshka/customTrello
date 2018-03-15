@@ -6,19 +6,6 @@ const baseData = [
     id: uuid(),
     name: 'TODO',
     cards: [],
-    // cards: [
-    //   {
-    //     id: uuid(),
-    //     name: 'card Todo',
-    //     description: 'description',
-    //     comments: [],
-    //     user: {
-    //       id: uuid(),
-    //       fullName: '',
-    //       avatarUrl: 'www.google.com',
-    //     },
-    //   },
-    // ],
   },
   {
     id: uuid(),
@@ -56,20 +43,18 @@ const columns = new schema.Array(column);
 
 export default (database = null) => {
   try {
-      //console.log('baseData ', baseData);
-      const normalizedData = normalize(baseData, columns);
-   //   console.log('normalizedData ', normalizedData);
-      const data = {
-        columnsIds: database.columnsIds || normalizedData.result,
-        columns: database.columns || normalizedData.entities.columns,
-        cards: database.cards || normalizedData.entities.cards || {},
-        comments: database.comments || normalizedData.entities.comments || {},
-        users: database.users || normalizedData.entities.users || {},
-        currentUser: database.currentUser || normalizedData.entities.currentUser || {},
-      }
-   //   console.log('data ', data);
-      return data
-  } catch(err) {
+    const normalizedData = normalize(baseData, columns);
+    const data = {
+      columnsIds: database.columnsIds || normalizedData.result,
+      columns: database.columns || normalizedData.entities.columns,
+      cards: database.cards || normalizedData.entities.cards || {},
+      comments: database.comments || normalizedData.entities.comments || {},
+      users: database.users || normalizedData.entities.users || {},
+      currentUser:
+        database.currentUser || normalizedData.entities.currentUser || {},
+    };
+    return data;
+  } catch (err) {
     console.log(err.message);
     throw new Error(err);
   }

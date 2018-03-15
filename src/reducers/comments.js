@@ -1,7 +1,5 @@
 import { handleActions } from 'redux-actions';
-
 import * as types from './types';
-import uuid from "uuid/v1";
 
 const initialState = {};
 
@@ -12,13 +10,13 @@ export default handleActions(
       return comments || {};
     },
     [types.CREATE_COMMENT]: (state, action) => {
-      const { text, newCommentId } = action.payload;
+      const { text, newCommentId, userId } = action.payload;
       return {
         ...state,
         [newCommentId] : {
           id: newCommentId,
           text: text,
-          user: uuid(),
+          user: userId,
         }
       };
     },

@@ -10,11 +10,8 @@ import './styles/index.css';
 import App from './containers/App';
 import registerServiceWorker from './registerServiceWorker';
 import normalizeData from './data';
-
 const persistedState = loadState();
 const entities = normalizeData(persistedState);
-
-//console.log('persisted', entities, persistedState);
 
 const data = {
   columnsIds: entities.columnsIds,
@@ -25,7 +22,6 @@ const data = {
   currentUser: entities.currentUser ,
 };
 
-
 const store = configureStore(reducers, persistedState);
 
 store.subscribe(throttle(() => {
@@ -33,7 +29,6 @@ store.subscribe(throttle(() => {
 }), 1000);
 
 store.dispatch(loadInitialData(data));
-
 
 ReactDOM.render(
   <Provider store={store}>

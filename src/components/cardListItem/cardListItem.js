@@ -17,7 +17,6 @@ class CardListItem extends Component {
   };
 
   modalShowHandle = e => {
-    e.nativeEvent.stopImmediatePropagation();
     this.setState({ modal: true });
   };
 
@@ -28,7 +27,6 @@ class CardListItem extends Component {
   render() {
     const remark = 'vvedite nazvanie karto4ki';
     const card = this.props.card;
-    const { currentUser } = this.props;
     const author = this.props.users[this.props.card.user];
     const { id, name, description, comments } = card;
     return (
@@ -61,19 +59,22 @@ class CardListItem extends Component {
           <Glyphicon glyph="remove" />
         </button>
         <ModalCard
-          onColHeaderChange={this.props.onColHeaderChange}
+          onColHeaderClick={this.props.onColHeaderClick}
           onCardHeaderChange={this.props.onCardHeaderChange}
           onAddComment={this.props.onAddComment}
           onRemoveComment={this.props.onRemoveComment}
           onEditComment={this.props.onEditComment}
           onEditDescription={this.props.onEditDescription}
           show={this.state.modal}
+          onShow={this.modalShowHandle}
           onHide={this.modalHideHandle}
           description={description}
           title={name}
           colname={this.props.colname}
           card={id}
-          user={author}
+          author={author}
+          users={this.props.users}
+          currentUser={this.props.currentUser}
           commentids={comments}
           comments={this.props.comments}
         />

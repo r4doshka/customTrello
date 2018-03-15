@@ -10,7 +10,6 @@ class ModalRegistration extends Component {
 
   handleInput = e => {
     this.setState({ input: e.target.value });
-    //   localStorage.setItem('User', JSON.stringify( e.target.value ));
   };
 
   renderUsers() {
@@ -21,8 +20,10 @@ class ModalRegistration extends Component {
         if(user.fullName){
           return <li key={key} onClick={() => this.pickUser(user.id)}>{user.fullName}</li>;
         }
+        return true;
       });
     }
+
   }
 
   createUser = () => {
@@ -35,7 +36,13 @@ class ModalRegistration extends Component {
 
   pickUser = (id) =>{
     this.props.onPickUser(id);
-    //console.log(id);
+  };
+
+  handleKeyPress = (e) => {
+    if(e.key === 'Enter'){
+      e.preventDefault();
+      this.createUser();
+    }
   };
 
   render() {
@@ -55,15 +62,15 @@ class ModalRegistration extends Component {
                 ref={input => input && input.focus()}
                 value={this.state.input}
                 onChange={this.handleInput}
+                onKeyPress={this.handleKeyPress}
               />
               <br/>
               <br/>
               <Button onClick={this.createUser}>Create</Button>
-              {/*onClick={this.props.onHide}*/}
             </Col>
             <Col md={6}>
               <h4>Viberi</h4>
-              <ul className='list'>
+              <ul className='list list_user'>
                 {this.renderUsers()}
               </ul>
             </Col>

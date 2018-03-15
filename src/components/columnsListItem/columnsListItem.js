@@ -16,8 +16,19 @@ class ColumnsListItem extends Component {
   };
 
   onAddClick = (columnId, userId )=> {
-   this.props.onCreateCard(this.state.text, columnId, userId);
-   this.setState({ text: '' });
+    if(this.state.text){
+      this.props.onCreateCard(this.state.text, columnId, userId);
+      this.setState({ text: '' });
+    } else {
+      return false
+    }
+  };
+
+  handleKeyPress = (e) => {
+    if(e.key === 'Enter'){
+      this.onAddClick( this.props.columnCurrent, this.props.currentUser.id);
+      this.setState({ text: '' });
+    }
   };
 
   render() {
@@ -29,7 +40,7 @@ class ColumnsListItem extends Component {
       <Col md={3} key={columnCurrent}>
         <div className="col">
           <EditBox
-            onHeaderChange={this.props.onColHeaderChange}
+            onHeaderChange={this.props.onColHeaderClick}
             heading={columnCurrent.name}
             remark={remark}
             clickable
@@ -42,7 +53,7 @@ class ColumnsListItem extends Component {
             cardRenderer={card => (
               <CardListItem
                 key={columnCurrent}
-                onColHeaderChange={this.props.onColHeaderChange}
+                onColHeaderClick={this.props.onColHeaderClick}
                 onCardHeaderChange={this.props.onCardHeaderChange}
                 currentUser={currentUser}
                 users={this.props.users}
@@ -61,6 +72,7 @@ class ColumnsListItem extends Component {
             type="text"
             value={this.state.text}
             onChange={this.inputHandle}
+            onKeyPress={this.handleKeyPress}
           />
           <Button bsStyle="success" onClick={() => this.onAddClick(this.props.columnCurrent, currentUser.id)}>
             Add Card

@@ -4,7 +4,6 @@ import QueueAnim from 'rc-queue-anim';
 
 class ColumnsList extends Component {
   renderColumns(columnsIds) {
-   // console.log(columnsIds)
     return columnsIds.map((id, index) => {
       return React.cloneElement(this.props.columnRenderer(id, index), {
         key: id,
@@ -21,7 +20,7 @@ class ColumnsList extends Component {
     return (
       <Grid>
         <Row>
-          <QueueAnim type='right' interval={700} delay={100} duration={1000}>{this.renderColumns(columnsIds)}</QueueAnim>
+          <QueueAnim type='right' interval={500} delay={100} duration={500}>{this.renderColumns(columnsIds)}</QueueAnim>
         </Row>
       </Grid>
     );

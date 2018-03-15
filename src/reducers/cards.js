@@ -1,5 +1,4 @@
 import { handleActions } from 'redux-actions';
-import uuid from 'uuid/v1';
 import * as types from './types';
 
 const initialState = {};

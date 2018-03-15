@@ -73,7 +73,6 @@ class App extends Component {
 
   handleCreateCard = (text, columnId, userId) => {
     const CardId = uuid();
-    //console.log(text, columnId, userId)
     this.props.actions.createCard({ text, columnId, CardId, userId });
   };
 
@@ -89,9 +88,9 @@ class App extends Component {
     this.props.actions.updateCardHeader({ newHeader, id });
   };
 
-  handleCommentAdd = (text, cardId) => {
+  handleCommentAdd = (text, cardId, userId) => {
     const newCommentId = uuid();
-    this.props.actions.createComment({ text, cardId, newCommentId });
+    this.props.actions.createComment({ text, cardId, newCommentId, userId });
   };
 
   handleCommentRemove = (commentId, cardId) => {
@@ -108,10 +107,9 @@ class App extends Component {
 
   handleExit = () =>{
     this.props.actions.logout();
-  }
+  };
 
   render() {
-   // console.log(this.props)
     return (
       <div className="dashboard">
         <button className="btn btn-action" onClick={this.handleExit}>Log OUT</button>
@@ -129,7 +127,7 @@ class App extends Component {
               onRemoveCard={this.handleRemoveCard}
               onCreateCard={this.handleCreateCard}
               onEnter={this.handleInput}
-              onColHeaderChange={text =>
+              onColHeaderClick={text =>
                 this.handleColHeaderChange(text, column)
               }
               onCardHeaderChange={this.handleCardHeaderChange}

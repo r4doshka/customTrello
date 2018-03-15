@@ -14,7 +14,6 @@ class CommentsListItem extends Component {
   };
 
   handleRemoveComment = id => {
-    // console.log(id);
     this.props.onRemoveComment(id, this.props.cardId);
   };
 
@@ -28,11 +27,12 @@ class CommentsListItem extends Component {
   render() {
     const comment = this.props;
     const { commentId, comments } = comment;
-    // console.log(this.props.comments);
+    const authorId = comments[commentId].user;
+    const author = this.props.users[authorId].fullName;
     return (
       <li className="comments__item">
         {!this.state.editField ? (
-          <div>
+          <div className="comments__item-inner">
             <p className="comments__item-description">
               {comments[commentId].text}
             </p>
@@ -46,6 +46,9 @@ class CommentsListItem extends Component {
               >
                 Delete
               </button>
+            </div>
+            <div className="comments__item-author">
+              Author: { author }
             </div>
           </div>
         ) : (

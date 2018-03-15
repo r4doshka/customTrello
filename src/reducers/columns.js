@@ -1,5 +1,4 @@
 import { handleActions } from 'redux-actions';
-
 import * as types from './types';
 
 const initialState = {};
@@ -22,7 +21,6 @@ export default handleActions(
     },
     [types.CREATE_CARD]: (state, action) => {
       const { columnId, CardId } = action.payload;
-     // console.log('idcarti', CardId);
       return {
         ...state,
         [columnId]: {

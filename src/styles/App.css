@@ -76,6 +76,7 @@ html, body, #root{
     margin-bottom: 20px;
     max-height: 100px;
     overflow: hidden;
+    word-break: break-all;
 }
 .card-box{
     margin-bottom: 20px;
@@ -144,8 +145,17 @@ html, body, #root{
     padding: 0;
 }
 
+.list.list_user li{
+    cursor: pointer;
+}
+
+.list.list_user li:hover{
+    text-decoration: underline;
+}
+
 .list li{
     list-style: none;
+    margin-bottom: 10px;
 }
 
 .modal-body .header{
@@ -182,6 +192,16 @@ html, body, #root{
     box-shadow: 1px 1px 2px 0 rgba(0, 0, 0, 0.17);
 }
 
+.comments .comments__item-inner{
+    position: relative;
+}
+
+.comments .comments__item-author{
+    position: absolute;
+    bottom: 3px;
+    right: 0;
+}
+
 .comments .comments__item:last-child{
     margin-bottom: 0;
     border: none;
@@ -194,6 +214,7 @@ html, body, #root{
     line-height: 16px;
     background: #fff;
     border-radius: 5px;
+    word-break: break-all;
 }
 
 .comments-box__group{
@@ -237,6 +258,10 @@ html, body, #root{
 
 .modal-content .edit-panel .edit-box .btn{
     flex: 1 1 auto;
+}
+
+.description-box .description{
+    word-break: break-all;
 }
 
 @keyframes scale {

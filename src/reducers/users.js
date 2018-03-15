@@ -1,5 +1,4 @@
 import { handleActions } from 'redux-actions';
-
 import * as types from './types';
 
 const initialState = {};
@@ -7,7 +6,7 @@ const initialState = {};
 export default handleActions(
   {
     [types.LOAD_INITIAL_DATA]: (state, action) => {
-      const { users, currentUser } = action.payload;
+      const { users } = action.payload;
       return users || {} ;
     },
     [types.CREATE_USER]: (state, action) => {

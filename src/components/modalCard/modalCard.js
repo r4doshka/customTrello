@@ -15,27 +15,42 @@ class ModalCard extends Component {
     });
   };
 
-  handleEditDescriptionEdit = (text) => {
-   // console.log(this.props);
+  handleEditDescription = text => {
     this.props.onEditDescription(text, this.props.card);
     this.setState({
       editField: false,
     });
   };
 
+  handleKeyPress = e => {
+    if (e.keyCode === 27) {
+      this.props.onHide();
+    }
+  };
+
+  componentDidMount() {
+    document.addEventListener('keydown', this.handleKeyPress, false);
+  }
+  componentWillUnmount() {
+    document.removeEventListener('keydown', this.handleKeyPress, false);
+  }
+
   render() {
-      //console.log(this.props.description, this.props.card )
     return (
       <Modal
-        {...this.props}
+        show={this.props.show}
+        onClick={this.props.onShow}
         bsSize="large"
         aria-labelledby="contained-modal-title-lg"
+        onKeyPress={this.handleKeyPress}
       >
-        <Modal.Header closeButton>
+        <Modal.Header>
+          <button className="close" onClick={this.props.onHide}>
+            x
+          </button>
           <Modal.Title id="contained-modal-title-lg">
-            {/*{this.props.colname}*/}
             <EditBox
-              onHeaderChange={this.props.onColHeaderChange}
+              onHeaderChange={this.props.onColHeaderClick}
               heading={this.props.colname}
               clickable
               column={this.props.column}
@@ -44,8 +59,10 @@ class ModalCard extends Component {
         </Modal.Header>
         <Modal.Body>
           <div className="header">
-            <div className='user'>
-              <i>created by <b>{this.props.user.fullName}</b></i>
+            <div className="user">
+              <i>
+                created by <b>{this.props.author.fullName}</b>
+              </i>
             </div>
             <EditBox
               heading={this.props.title}
@@ -58,12 +75,18 @@ class ModalCard extends Component {
             {!this.state.editField ? (
               <div className="group">
                 <div className="description">{this.props.description}</div>
-                <button className="btn-link btn-link_secondary" onClick={this.showEditField}>
+                <button
+                  className="btn-link btn-link_secondary"
+                  onClick={this.showEditField}
+                >
                   Edit description
                 </button>
               </div>
             ) : (
-              <EditField currentText={this.props.description} onEditText={this.handleEditDescriptionEdit}/>
+              <EditField
+                currentText={this.props.description}
+                onEditText={this.handleEditDescription}
+              />
             )}
           </div>
           <CommentsList
@@ -73,6 +96,9 @@ class ModalCard extends Component {
             commentids={this.props.commentids}
             comments={this.props.comments}
             cardId={this.props.card}
+            users={this.props.users}
+            author={this.props.author}
+            currentUser={this.props.currentUser}
           />
         </Modal.Body>
         <Modal.Footer>
